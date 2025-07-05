@@ -1,13 +1,13 @@
-FROM node:18-alpine
+FROM node:10.1.0-alpine
 
 WORKDIR /app
 
-COPY package.json yarn.lock ./
+COPY package.json /app/
+COPY yarn.lock /app/
+
 RUN yarn install --production && yarn cache clean
 
-COPY . .
+COPY . /app
 
-ENV NODE_ENV=production
-
-EXPOSE 1234
-CMD ["node", "-r", "esm", "./bin/server", "--port", "1234"]
+ENV NODE_ENV production
+ENTRYPOINT ["node", "-r", "esm", "./bin/server", "--port", "1234"]
